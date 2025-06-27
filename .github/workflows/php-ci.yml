@@ -1,0 +1,30 @@
+name: CI para SEVD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clonar repositorio
+      uses: actions/checkout@v3
+
+    - name: Configurar PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+
+    - name: Instalar Composer
+      run: |
+        curl -sS https://getcomposer.org/installer | php
+        php composer.phar install
+
+    - name: Ejecutar pruebas PHPUnit
+      run: vendor/bin/phpunit --coverage-text
+
+
